@@ -1,4 +1,5 @@
-import logging, sys
+import logging
+import sys
 import os
 import requests
 import telegram
@@ -30,7 +31,7 @@ HOMEWORK_VERDICTS = {
 def check_tokens():
     """Проверяем, что есть все токены.
         Если нет хотя бы одного, то останавливаем бота.
-        """
+    """
     logging.info('Проверка наличия всех токенов')
     return all([PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID])
 
@@ -48,7 +49,7 @@ def send_message(bot, message: str) -> None:
 
 
 def get_api_answer(timestamp: int) -> dict:
-    """Получение ответа от сервера"""
+    """Получение ответа от сервера."""
     logging.info('Проверяем статус 200')
     try:
         response = requests.get(ENDPOINT,
@@ -64,7 +65,7 @@ def get_api_answer(timestamp: int) -> dict:
 
 
 def check_response(response: dict) -> list:
-    """Проверяет ответ API"""
+    """Проверяет ответ API."""
     logging.info('Проверка ответа API')
     if not isinstance(response, dict):
         raise TypeError('Ответ API не является dict')
@@ -76,8 +77,8 @@ def check_response(response: dict) -> list:
 
 def parse_status(homework: dict) -> str:
     """Извлекает из информации о конкретной домашней
-     работе статус этой работы
-     """
+     работе статус этой работы.
+    """
     if 'homework_name' not in homework:
         raise KeyError('Нет ключа homework_name в ответе API')
     homework_name = homework.get('homework_name')
