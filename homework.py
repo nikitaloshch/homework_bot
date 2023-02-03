@@ -106,15 +106,15 @@ def main():
             number_of_hw = len(homework)
             if number_of_hw > 0:
                 message = parse_status(homework[0])
+                send_message(bot, message)
                 logging.debug('Новый статус домашки')
             else:
-                message = 'Новые статусы домашки отсутствуют'
                 logging.debug('Новые статусы домашки отсутствуют')
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
+            send_message(bot, message)
             logging.critical(f'Сбой в работе программы: {error}')
         finally:
-            send_message(bot, message)
             time.sleep(RETRY_PERIOD)
             logging.info('Конец работы бота')
 
