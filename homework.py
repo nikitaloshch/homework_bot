@@ -30,7 +30,7 @@ HOMEWORK_VERDICTS = {
 
 def check_tokens():
     """Проверяем, что есть все токены.
-        Если нет хотя бы одного, то останавливаем бота.
+    Если нет хотя бы одного, то останавливаем бота.
     """
     logging.info('Проверка наличия всех токенов')
     return all([PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID])
@@ -76,8 +76,8 @@ def check_response(response: dict) -> list:
 
 
 def parse_status(homework: dict) -> str:
-    """Извлекает из информации о конкретной домашней
-     работе статус этой работы.
+    """Извлекает из информации о конкретной домашней.
+    работе статус этой работы.
     """
     if 'homework_name' not in homework:
         raise KeyError('Нет ключа homework_name в ответе API')
