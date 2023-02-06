@@ -1,14 +1,14 @@
-import logging
-import sys
 import os
-import requests
-import telegram
+import sys
 import time
-from my_exceptions import WrongResponse, TelegramError
-from dotenv import load_dotenv
+import logging
 from http import HTTPStatus
 
-logging.StreamHandler(sys.stdout)
+import requests
+import telegram
+from dotenv import load_dotenv
+
+from my_exceptions import WrongResponse, TelegramError
 
 load_dotenv()
 
@@ -60,7 +60,6 @@ def get_api_answer(timestamp: int) -> dict:
             raise WrongResponse('Ответ не возвращает 200')
         return response.json()
     except Exception as error:
-        logging.error(f'Ошибка при запросе к основному API: {error}')
         raise WrongResponse(f'Ошибка при запросе к основному API: {error}')
 
 
@@ -79,12 +78,14 @@ def parse_status(homework: dict) -> str:
     """Извлекает из информации о конкретной домашней.
     работе статус этой работы.
     """
+    logging.info('Проводим проверки и извлекаем статус работы')
     if 'homework_name' not in homework:
         raise KeyError('Нет ключа homework_name в ответе API')
     homework_name = homework.get('homework_name')
     homework_status = homework.get('status')
     if homework_status not in HOMEWORK_VERDICTS:
         raise ValueError(f'Неизвестный статуc домашки {homework_status}')
+
     verdict = HOMEWORK_VERDICTS[homework_status]
     return f'Изменился статус проверки работы "{homework_name}". {verdict}'
 
@@ -107,16 +108,14 @@ def main():
             if number_of_hw > 0:
                 message = parse_status(homework[0])
                 send_message(bot, message)
-                logging.debug('Новый статус домашки')
+                logging.info('Новый статус домашки')
             else:
-                logging.debug('Новые статусы домашки отсутствуют')
+                logging.info('Новые статусы домашки отсутствуют')
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
             send_message(bot, message)
-            logging.critical(f'Сбой в работе программы: {error}')
-        finally:
-            time.sleep(RETRY_PERIOD)
-            logging.info('Конец работы бота')
+            logging.critical(message)
+        time.sleep(RETRY_PERIOD)
 
 
 if __name__ == '__main__':
