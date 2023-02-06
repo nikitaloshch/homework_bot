@@ -10,6 +10,8 @@ from dotenv import load_dotenv
 
 from my_exceptions import WrongResponse, TelegramError
 
+#Я к сожалению в 53 когорту перешёл, у меня в пачке вас нет
+
 load_dotenv()
 
 PRACTICUM_TOKEN = os.getenv('YA_TOKEN')
